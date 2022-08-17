@@ -30,7 +30,7 @@ from server.wsgi import registry
 
 class MeasurementViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = MeasurementSerializer
-    queryset = Measurement.objects.all()
+    queryset = Measurements.objects.all()
 
 
 class EndpointViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -119,7 +119,7 @@ class PredictView(views.APIView):
         return Response(prediction)
 
 
-class SaveAndPredict(views.APIView):
+class SaveAndPredictView(views.APIView):
     """
         {"measure": [{"limp": "f",
                      "side": "l",
@@ -158,36 +158,42 @@ class SaveAndPredict(views.APIView):
                    ]...
         }
     """
+
     def post(self, request, endpoint_name, format=None):
-        algorithm_status = self.request.query_params.get("status", "production")
-        algorithm_version = self.request.query_params.get("version")
-
-        algs = MLAlgorithm.objects.filter(parent_endpoint__name=endpoint_name, status__status=algorithm_status,
-                                          status__active=True)
-
-        if algorithm_version is not None:
-            algs = algs.filter(version=algorithm_version)
-
-        if len(algs) == 0:
-            return Response(
-                {"status": "Error", "message": "ML algorithm is not available"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        if len(algs) != 1 and algorithm_status != "ab_testing":
-            return Response(
-                {"status": "Error",
-                 "message": "ML algorithm selection is ambiguous. Please specify algorithm version."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        alg_index = 0
-        algorithm_object = registry.endpoints[algs[alg_index].id]
+        # algorithm_status = self.request.query_params.get("status", "production")
+        # algorithm_version = self.request.query_params.get("version")
+        #
+        # algs = MLAlgorithm.objects.filter(parent_endpoint__name=endpoint_name, status__status=algorithm_status,
+        #                                   status__active=True)
+        #
+        # if algorithm_version is not None:
+        #     algs = algs.filter(version=algorithm_version)
+        #
+        # if len(algs) == 0:
+        #     return Response(
+        #         {"status": "Error", "message": "ML algorithm is not available"},
+        #         status=status.HTTP_400_BAD_REQUEST,
+        #     )
+        # if len(algs) != 1 and algorithm_status != "ab_testing":
+        #     return Response(
+        #         {"status": "Error",
+        #          "message": "ML algorithm selection is ambiguous. Please specify algorithm version."},
+        #         status=status.HTTP_400_BAD_REQUEST,
+        #     )
+        # alg_index = 0
+        # algorithm_object = registry.endpoints[algs[alg_index].id]
 
         # write data in the db
+        # TODO
+        from pprint import pprint
+        input_data = json.loads(request.data)
+        measurement_id = input_data["measurement_id"]
         measurement_list = list()
-        for measurement_item in request.data["measure"]:
+        for measurement_item in input_data["measure"]:
             for value in measurement_item["values"]:
                 measurement = Measurements(
-                    timestamp=value["vector"]["timestamp"],
+                    measurement_id=measurement_id,
+                    timestamp=value["timestamp"],
                     measurement_type=measurement_item["type"],
                     limp_type=measurement_item["limp"],
                     limp_side=measurement_item["side"],
@@ -198,10 +204,54 @@ class SaveAndPredict(views.APIView):
                 measurement_list.append(measurement)
         Measurements.objects.bulk_create(measurement_list)
 
-        left_arm_acc = Measurements.objects.get(measurement_type="acc", limp_type="arm", limp_side="l")
+        left_arm_acc = Measurements.objects.filter(measurement_id=measurement_id,
+                                                   measurement_type="acc",
+                                                   limp_type="a",
+                                                   limp_side="l").values()
+        left_arm_gyr = Measurements.objects.filter(measurement_id=measurement_id,
+                                                   measurement_type="gyr",
+                                                   limp_type="a",
+                                                   limp_side="l").values()
+        right_arm_acc = Measurements.objects.filter(measurement_id=measurement_id,
+                                                    measurement_type="acc",
+                                                    limp_type="a",
+                                                    limp_side="r").values()
+        right_arm_gyr = Measurements.objects.filter(measurement_id=measurement_id,
+                                                    measurement_type="gyr",
+                                                    limp_type="a",
+                                                    limp_side="r").values()
+        left_foot_acc = Measurements.objects.filter(measurement_id=measurement_id,
+                                                    measurement_type="acc",
+                                                    limp_type="f",
+                                                    limp_side="l").values()
+        left_foot_gyr = Measurements.objects.filter(measurement_id=measurement_id,
+                                                    measurement_type="gyr",
+                                                    limp_type="f",
+                                                    limp_side="l").values()
+        right_foot_acc = Measurements.objects.filter(measurement_id=measurement_id,
+                                                     measurement_type="acc",
+                                                     limp_type="f",
+                                                     limp_side="r").values()
+        right_foot_gyr = Measurements.objects.filter(measurement_id=measurement_id,
+                                                     measurement_type="gyr",
+                                                     limp_type="f",
+                                                     limp_side="r").values()
 
+        meas = Measurement(measurement_id)
 
-        return Response(prediction)
+        meas.measurement_dict = {
+            ("left", "arm", "acc"): left_arm_acc,
+            ("left", "arm", "gyr"): left_arm_gyr,
+            ("left", "leg", "acc"): left_foot_acc,
+            ("left", "leg", "gyr"): left_foot_gyr,
+            ("right", "arm", "acc"): right_arm_acc,
+            ("right", "arm", "gyr"): right_arm_gyr,
+            ("right", "leg", "acc"): right_foot_acc,
+            ("right", "leg", "gyr"): right_foot_gyr,
+        }
+
+        # prediction = type(left_arm_acc)
+        return Response({"status": "OK"})
 
 
 class ABTestViewSet(

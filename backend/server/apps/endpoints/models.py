@@ -6,6 +6,7 @@ class Measurements(models.Model):
     The Measurements object represents measurement endpoint.
 
     Attributes:
+        measurement_id: Unique id of the measurement
         timestamp: Time of the measurement.
         measurement_type: Acceleration (acc) or Gyroscope (gyr)
         limp_type: Arm or Foot
@@ -17,6 +18,7 @@ class Measurements(models.Model):
 
         created_at: The date when endpoint was created.
     '''
+    measurement_id = models.IntegerField()
     timestamp = models.FloatField()
     measurement_type = models.CharField(max_length=3)
     limp_type = models.CharField(max_length=1)
@@ -27,6 +29,10 @@ class Measurements(models.Model):
     v3 = models.FloatField()
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
+
+    # class Meta:
+    #     managed = True
+    #     db_table = 'endpoints_measurements'
 
 
 class Endpoint(models.Model):
@@ -56,13 +62,17 @@ class MLAlgorithm(models.Model):
         created_at: The date when MLAlgorithm was added.
         parent_endpoint: The reference to the Endpoint.
     '''
-    name = models.CharField(max_length=128)
-    description = models.CharField(max_length=1000)
-    code = models.CharField(max_length=50000)
-    version = models.CharField(max_length=128)
-    owner = models.CharField(max_length=128)
+    name = models.TextField()
+    description = models.TextField()
+    code = models.TextField()
+    version = models.TextField()
+    owner = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     parent_endpoint = models.ForeignKey(Endpoint, on_delete=models.CASCADE)
+
+    # class Meta:
+    #     managed = True
+    #     db_table = 'endpoints_mlalgorithm'
 
 
 class MLAlgorithmStatus(models.Model):
@@ -94,10 +104,10 @@ class MLRequest(models.Model):
         created_at: The date when request was created.
         parent_mlalgorithm: The reference to MLAlgorithm used to compute response.
     '''
-    input_data = models.CharField(max_length=10000)
-    full_response = models.CharField(max_length=10000)
-    response = models.CharField(max_length=10000)
-    feedback = models.CharField(max_length=10000, blank=True, null=True)
+    input_data = models.TextField()
+    full_response = models.TextField()
+    response = models.TextField()
+    feedback = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     parent_mlalgorithm = models.ForeignKey(MLAlgorithm, on_delete=models.CASCADE)
 
@@ -114,11 +124,11 @@ class ABTest(models.Model):
         parent_mlalgorithm_1: The reference to the first corresponding MLAlgorithm.
         parent_mlalgorithm_2: The reference to the second corresponding MLAlgorithm.
     '''
-    title = models.CharField(max_length=10000)
+    title = models.TextField()
     created_by = models.CharField(max_length=128)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     ended_at = models.DateTimeField(blank=True, null=True)
-    summary = models.CharField(max_length=10000, blank=True, null=True)
+    summary = models.TextField(blank=True, null=True)
 
     parent_mlalgorithm_1 = models.ForeignKey(MLAlgorithm, on_delete=models.CASCADE, related_name="parent_mlalgorithm_1")
     parent_mlalgorithm_2 = models.ForeignKey(MLAlgorithm, on_delete=models.CASCADE, related_name="parent_mlalgorithm_2")

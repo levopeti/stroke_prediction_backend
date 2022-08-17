@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # <-- UPDATED line
-        'NAME': os.path.join(BASE_DIR, 'mytestdb'),  # <-- UPDATED line
+        'NAME': 'mytestdb',  # os.path.join(BASE_DIR, 'mytestdb'),  # <-- UPDATED line
         'USER': 'test',  # <-- UPDATED line
-        'PASSWORD': 'Secret_1234',  # <-- UPDATED line
+        'PASSWORD': 'Secret_1234',  # <-- UPDATED line 666Pw666*
         'HOST': 'localhost',  # <-- UPDATED line
         'PORT': '3306',
     }

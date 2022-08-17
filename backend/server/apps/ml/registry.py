@@ -21,6 +21,7 @@ class MLRegistry:
             version=algorithm_version,
             owner=owner,
             parent_endpoint=endpoint)
+
         if algorithm_created:
             status = MLAlgorithmStatus(status=algorithm_status,
                                        created_by=owner,

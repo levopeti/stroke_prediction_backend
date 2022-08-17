@@ -24,3 +24,5 @@ In the `docker` directory there are dockerfiles for running the service in the c
 ## Django + React Tutorial :books:
 
 I'm working on complete tutorial how to build SaaS (software as a Service) application with Django and React from scratch. The tutorial is available at [SaaSitive](https://saasitive.com) website: https://saasitive.com/django-react/boilerplate/
+
+https://dev.to/sm0ke/how-to-use-mysql-with-django-for-beginners-2ni0
