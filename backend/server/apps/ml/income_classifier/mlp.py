@@ -4,7 +4,8 @@ import numpy as np
 
 class MLP(object):
     def __init__(self):
-        path_to_artifacts = "../../research/"
+        # path_to_artifacts = "../../research/"
+        path_to_artifacts = "./research/"
         self.model = keras.models.load_model(path_to_artifacts + "model_90_1000000_all")
         self.model.summary()
 
