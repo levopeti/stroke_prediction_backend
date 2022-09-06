@@ -19,7 +19,7 @@ class Measurements(models.Model):
         created_at: The date when endpoint was created.
     '''
     measurement_id = models.IntegerField()
-    timestamp = models.FloatField()
+    timestamp = models.IntegerField()
     measurement_type = models.CharField(max_length=3)
     limp_type = models.CharField(max_length=1)
     limp_side = models.CharField(max_length=1)
