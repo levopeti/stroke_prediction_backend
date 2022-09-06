@@ -10,6 +10,9 @@ class MLP(object):
 
     @staticmethod
     def preprocessing(input_data):
+        if not isinstance(input_data, np.ndarray):
+            input_data = np.array(input_data)
+
         return input_data
 
     def predict(self, input_data):
