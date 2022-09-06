@@ -1,2 +1,3 @@
-research/*ipynb
-research/*joblib
+research/*.ipynb
+research/*.joblib
+backend/server/*.sqlite3
