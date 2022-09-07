@@ -186,7 +186,13 @@ class SaveAndPredictView(views.APIView):
             return _algorithm_object
 
         def write_data_into_db():
-            _input_data = json.loads(request.data)
+            if isinstance(request.data, dict):
+                _input_data = json.loads(json.dumps(request.data))
+            elif isinstance(request.data, str):
+                _input_data = json.loads(request.data)
+            else:
+                raise TypeError("request.data is not dict or str")
+
             measurement_id = _input_data["measurement_id"]
             measurement_list = list()
             for measurement_item in _input_data["measure"]:
