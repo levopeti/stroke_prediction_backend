@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from django.conf import settings
+from influxdb import InfluxDBClient
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -73,6 +76,29 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+
+# INFLUXDB_HOST = 'influxdb'
+# INFLUXDB_PORT = 8086
+# INFLUXDB_USERNAME = "superadmin"
+# INFLUXDB_PASSWORD = "666666"
+# INFLUXDB_DATABASE = 'mydb'
+# INFLUXDB_TIMEOUT = 10
+#
+#
+# def get_influxdb_client():
+#     """Returns an ``InfluxDBClient`` instance."""
+#     client = InfluxDBClient(
+#         settings.INFLUXDB_HOST,
+#         settings.INFLUXDB_PORT,
+#         settings.INFLUXDB_USERNAME,
+#         settings.INFLUXDB_PASSWORD,
+#         settings.INFLUXDB_DATABASE,
+#         timeout=getattr(settings, 'INFLUXDB_TIMEOUT', 10),
+#         ssl=getattr(settings, 'INFLUXDB_SSL', False),
+#         verify_ssl=getattr(settings, 'INFLUXDB_VERIFY_SSL', False),
+#     )
+#     return client
+
 
 DATABASES = {
     'default': {
