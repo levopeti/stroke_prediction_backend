@@ -126,7 +126,7 @@ class SaveAndPredictView(views.APIView):
     """
         {"measure": [{"limp": "f",
                      "side": "l",
-                     "type": "gyr",
+                     "type": "g",
                      "values": [{"timestamp": 1224L,
                                  "vector": {"v1": 123f,
                                             "v2": 1234f,
@@ -143,7 +143,7 @@ class SaveAndPredictView(views.APIView):
                     },
                     {"limp": "a",
                      "side": "r",
-                     "type": "acc",
+                     "type": "a",
                      "values": [{"timestamp": 1224L,
                                  "vector": {"v1": 123f,
                                             "v2": 1234f,
