@@ -8,7 +8,7 @@ class Measurements(models.Model):
     Attributes:
         measurement_id: Unique id of the measurement
         timestamp: Time of the measurement.
-        measurement_type: Acceleration (acc) or Gyroscope (gyr)
+        measurement_type: Acceleration (a) or Gyroscope (g)
         limp_type: Arm or Foot
         limp_side: Left or Right
 
@@ -24,9 +24,12 @@ class Measurements(models.Model):
     limp_type = models.CharField(max_length=1)
     limp_side = models.CharField(max_length=1)
 
-    v1 = models.DecimalField(max_digits=4, decimal_places=3)
-    v2 = models.DecimalField(max_digits=4, decimal_places=3)
-    v3 = models.DecimalField(max_digits=4, decimal_places=3)
+    max_digits = 5
+    decimal_places = 3
+    v1 = models.DecimalField(max_digits=max_digits, decimal_places=decimal_places)
+    v2 = models.DecimalField(max_digits=max_digits, decimal_places=decimal_places)
+    v3 = models.DecimalField(max_digits=max_digits, decimal_places=decimal_places)
+
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
     # class Meta:

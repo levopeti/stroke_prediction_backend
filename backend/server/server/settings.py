@@ -24,7 +24,7 @@ SECRET_KEY = '^lw0)9982b8nt^^-t34967jnl(n7iojl!q+!5xojw9mr6u0h9f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'strokepredtest.herokuapp.com']
 
 # Application definition
 
@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # <-- UPDATED line
-        'NAME': 'mytestdb',  # os.path.join(BASE_DIR, 'mytestdb'),  # <-- UPDATED line
-        'USER': 'test',  # <-- UPDATED line
-        'PASSWORD': 'Secret_1234',  # <-- UPDATED line 666Pw666*
-        'HOST': 'localhost',  # <-- UPDATED line
+        'NAME': 'mysql',  # os.path.join(BASE_DIR, 'mytestdb'),  # <-- UPDATED line
+        'USER': 'root',  # <-- UPDATED line
+        'PASSWORD': 'XviE5bx07vKSElKb9mMfIkS4f5KprOVw',  # <-- UPDATED line 666Pw666*
+        'HOST': 'yo5xff.stackhero-network.com',  # <-- UPDATED line
         'PORT': '3306',
     }
     # 'default': {
