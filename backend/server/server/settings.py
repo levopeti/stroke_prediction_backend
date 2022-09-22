@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # <-- UPDATED line
-        'NAME': 'd74q3mq324ipvt',  # os.path.join(BASE_DIR, 'mytestdb'),  # <-- UPDATED line
-        'USER': 'fkezfdbavlstdb',  # <-- UPDATED line
-        'PASSWORD': 'c987ee6990583c6f7e8b4b480d8b2654b8b55fa534ae61a434c28812160707a1',  # <-- UPDATED line 666Pw666*
-        'HOST': 'ec2-54-76-43-89.eu-west-1.compute.amazonaws.com',  # <-- UPDATED line
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',  # <-- UPDATED line
+        'NAME': 'mysql',  # os.path.join(BASE_DIR, 'mytestdb'),  # <-- UPDATED line
+        'USER': 'root',  # <-- UPDATED line
+        'PASSWORD': '0PgUKNP5JZlRT2GD2ibStmLl3rmeEDzr',  # <-- UPDATED line 666Pw666*
+        'HOST': 'osn5c1.stackhero-network.com',  # <-- UPDATED line
+        'PORT': '3306',
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
