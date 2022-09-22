@@ -27,7 +27,8 @@ from rest_framework import views, status
 from rest_framework.response import Response
 from apps.ml.registry import MLRegistry
 from apps.ml.income_classifier.measurement import Measurement, NotEnoughData
-from server.wsgi import registry
+from server.wsgi import mlp
+# from server.wsgi import registry
 
 
 class MeasurementViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -163,6 +164,8 @@ class SaveAndPredictView(views.APIView):
 
     def post(self, request, endpoint_name, format=None):
         def load_ml_algorithm():
+            return mlp
+        def old_load_ml_algorithm():
             algorithm_status = self.request.query_params.get("status", "production")
             algorithm_version = "0.0.1"  # self.request.query_params.get("version")
 
@@ -280,7 +283,7 @@ class SaveAndPredictView(views.APIView):
             meas.check_frequency(expected_delta, eps=eps)
             meas.synchronize_measurement_dict()
 
-            minutes = 90
+            minutes = 10
             length = frequency * 60 * minutes
             keys_in_order = (("arm", "acc"),
                              ("leg", "acc"),
@@ -296,6 +299,9 @@ class SaveAndPredictView(views.APIView):
                 _instance.append([diff_mean, ratio_mean_first, ratio_mean])
 
             return sum(_instance, [])
+
+        # from time import sleep
+        # sleep(3)
 
         try:
             input_data = write_data_into_db()
