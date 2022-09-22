@@ -126,7 +126,7 @@ class SaveAndPredictView(views.APIView):
     """
         {"measure": [{"limp": "f",
                      "side": "l",
-                     "type": "gyr",
+                     "type": "g",
                      "values": [{"timestamp": 1224L,
                                  "vector": {"v1": 123f,
                                             "v2": 1234f,
@@ -143,7 +143,7 @@ class SaveAndPredictView(views.APIView):
                     },
                     {"limp": "a",
                      "side": "r",
-                     "type": "acc",
+                     "type": "a",
                      "values": [{"timestamp": 1224L,
                                  "vector": {"v1": 123f,
                                             "v2": 1234f,
@@ -165,28 +165,28 @@ class SaveAndPredictView(views.APIView):
     def post(self, request, endpoint_name, format=None):
         def load_ml_algorithm():
             return mlp
-        def old_load_ml_algorithm():
-            algorithm_status = self.request.query_params.get("status", "production")
-            algorithm_version = "0.0.1"  # self.request.query_params.get("version")
-
-            algs = MLAlgorithm.objects.filter(parent_endpoint__name=endpoint_name, status__status=algorithm_status,
-                                              status__active=True)
-
-            if algorithm_version is not None:
-                algs = algs.filter(version=algorithm_version)
-
-            # TODO: we have more algs from the same type, but the need the first now
-            # if len(algs) == 0:
-            #     raise ValueError("status: Error, message: ML algorithm is not available")
-            # if len(algs) != 1 and algorithm_status != "ab_testing":
-            #     raise ValueError("status: Error, message: ML algorithm selection is ambiguous."
-            #                      " Please specify algorithm version.")
-
-            # TODO
-            # alg_index = 0
-            # _algorithm_object = registry.endpoints[algs[alg_index].id]
-            _algorithm_object = registry.endpoints[3]
-            return _algorithm_object
+        # def old_load_ml_algorithm():
+        #     algorithm_status = self.request.query_params.get("status", "production")
+        #     algorithm_version = "0.0.1"  # self.request.query_params.get("version")
+        #
+        #     algs = MLAlgorithm.objects.filter(parent_endpoint__name=endpoint_name, status__status=algorithm_status,
+        #                                       status__active=True)
+        #
+        #     if algorithm_version is not None:
+        #         algs = algs.filter(version=algorithm_version)
+        #
+        #     # TODO: we have more algs from the same type, but the need the first now
+        #     # if len(algs) == 0:
+        #     #     raise ValueError("status: Error, message: ML algorithm is not available")
+        #     # if len(algs) != 1 and algorithm_status != "ab_testing":
+        #     #     raise ValueError("status: Error, message: ML algorithm selection is ambiguous."
+        #     #                      " Please specify algorithm version.")
+        #
+        #     # TODO
+        #     # alg_index = 0
+        #     # _algorithm_object = registry.endpoints[algs[alg_index].id]
+        #     _algorithm_object = registry.endpoints[3]
+        #     return _algorithm_object
 
         def write_data_into_db():
             _input_data = json.loads(request.data)
@@ -211,35 +211,35 @@ class SaveAndPredictView(views.APIView):
         def get_meas_from_db():
             measurement_id = input_data["measurement_id"]
             left_arm_acc = Measurements.objects.filter(measurement_id=measurement_id,
-                                                       measurement_type="acc",
+                                                       measurement_type="a",
                                                        limp_type="a",
                                                        limp_side="l").values()
             left_arm_gyr = Measurements.objects.filter(measurement_id=measurement_id,
-                                                       measurement_type="gyr",
+                                                       measurement_type="g",
                                                        limp_type="a",
                                                        limp_side="l").values()
             right_arm_acc = Measurements.objects.filter(measurement_id=measurement_id,
-                                                        measurement_type="acc",
+                                                        measurement_type="a",
                                                         limp_type="a",
                                                         limp_side="r").values()
             right_arm_gyr = Measurements.objects.filter(measurement_id=measurement_id,
-                                                        measurement_type="gyr",
+                                                        measurement_type="g",
                                                         limp_type="a",
                                                         limp_side="r").values()
             left_foot_acc = Measurements.objects.filter(measurement_id=measurement_id,
-                                                        measurement_type="acc",
+                                                        measurement_type="a",
                                                         limp_type="f",
                                                         limp_side="l").values()
             left_foot_gyr = Measurements.objects.filter(measurement_id=measurement_id,
-                                                        measurement_type="gyr",
+                                                        measurement_type="g",
                                                         limp_type="f",
                                                         limp_side="l").values()
             right_foot_acc = Measurements.objects.filter(measurement_id=measurement_id,
-                                                         measurement_type="acc",
+                                                         measurement_type="a",
                                                          limp_type="f",
                                                          limp_side="r").values()
             right_foot_gyr = Measurements.objects.filter(measurement_id=measurement_id,
-                                                         measurement_type="gyr",
+                                                         measurement_type="g",
                                                          limp_type="f",
                                                          limp_side="r").values()
 
