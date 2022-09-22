@@ -210,9 +210,9 @@ class SaveAndPredictView(views.APIView):
                         measurement_type=measurement_item["type"],
                         limp_type=measurement_item["limp"],
                         limp_side=measurement_item["side"],
-                        v1=Decimal(str(value["vector"]["v1"])),
-                        v2=Decimal(str(value["vector"]["v2"])),
-                        v3=Decimal(str(value["vector"]["v3"])),
+                        v1=Decimal(str(round(value["vector"]["v1"], 3))),
+                        v2=Decimal(str(round(value["vector"]["v2"], 3))),
+                        v3=Decimal(str(round(value["vector"]["v3"], 3))),
                     )
                     measurement_list.append(measurement)
             Measurements.objects.bulk_create(measurement_list)

@@ -24,7 +24,7 @@ class Measurements(models.Model):
     limp_type = models.CharField(max_length=1)
     limp_side = models.CharField(max_length=1)
 
-    max_digits = 5
+    max_digits = 6
     decimal_places = 3
     v1 = models.DecimalField(max_digits=max_digits, decimal_places=decimal_places)
     v2 = models.DecimalField(max_digits=max_digits, decimal_places=decimal_places)
