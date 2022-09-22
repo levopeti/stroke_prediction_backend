@@ -28,6 +28,10 @@ from rest_framework.response import Response
 from apps.ml.registry import MLRegistry
 from apps.ml.income_classifier.measurement import Measurement, NotEnoughData
 from server.wsgi import mlp
+from decimal import Decimal
+import traceback
+
+
 # from server.wsgi import registry
 
 
@@ -165,6 +169,7 @@ class SaveAndPredictView(views.APIView):
     def post(self, request, endpoint_name, format=None):
         def load_ml_algorithm():
             return mlp
+
         # def old_load_ml_algorithm():
         #     algorithm_status = self.request.query_params.get("status", "production")
         #     algorithm_version = "0.0.1"  # self.request.query_params.get("version")
@@ -206,9 +211,9 @@ class SaveAndPredictView(views.APIView):
                         measurement_type=measurement_item["type"],
                         limp_type=measurement_item["limp"],
                         limp_side=measurement_item["side"],
-                        v1=value["vector"]["v1"],
-                        v2=value["vector"]["v2"],
-                        v3=value["vector"]["v3"],
+                        v1=Decimal(str(value["vector"]["v1"])),
+                        v2=Decimal(str(value["vector"]["v2"])),
+                        v3=Decimal(str(value["vector"]["v3"])),
                     )
                     measurement_list.append(measurement)
             Measurements.objects.bulk_create(measurement_list)
@@ -255,9 +260,14 @@ class SaveAndPredictView(views.APIView):
                            'v2': list(),
                            'v3': list()}
 
+                cast_dict = {'timestamp': lambda x: x,
+                             'v1': lambda x: float(x),
+                             'v2': lambda x: float(x),
+                             'v3': lambda x: float(x)}
+
                 for query in queries:
                     for key in df_dict.keys():
-                        df_dict[key].append(query[key])
+                        df_dict[key].append(cast_dict[key](query[key]))
 
                 return pd.DataFrame.from_dict(df_dict)
 
@@ -307,7 +317,12 @@ class SaveAndPredictView(views.APIView):
             input_data = write_data_into_db()
         except Exception as e:
             print(e)
-            return Response({"status": "Error during write data into the db: {}".format(repr(e)), "prediction": "None"})
+            # exc_type, exc_obj, exc_tb = sys.exc_info()
+            # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(traceback.format_exc())
+            return Response({"status": "Error during write data into the db: {}, "
+                                       "{}".format(repr(e), traceback.format_exc()),
+                             "prediction": "None"})
 
         try:
             meas = get_meas_from_db()
