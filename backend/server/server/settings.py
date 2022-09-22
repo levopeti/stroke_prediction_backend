@@ -79,8 +79,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # <-- UPDATED line
         'NAME': 'mysql',  # os.path.join(BASE_DIR, 'mytestdb'),  # <-- UPDATED line
         'USER': 'root',  # <-- UPDATED line
-        'PASSWORD': '0PgUKNP5JZlRT2GD2ibStmLl3rmeEDzr',  # <-- UPDATED line 666Pw666*
-        'HOST': 'osn5c1.stackhero-network.com',  # <-- UPDATED line
+        'PASSWORD': 'XviE5bx07vKSElKb9mMfIkS4f5KprOVw',  # <-- UPDATED line 666Pw666*
+        'HOST': 'yo5xff.stackhero-network.com',  # <-- UPDATED line
         'PORT': '3306',
     }
     # 'default': {
