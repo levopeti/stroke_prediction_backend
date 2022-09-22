@@ -217,35 +217,35 @@ class SaveAndPredictView(views.APIView):
         def get_meas_from_db():
             measurement_id = input_data["measurement_id"]
             left_arm_acc = Measurements.objects.filter(measurement_id=measurement_id,
-                                                       measurement_type="acc",
+                                                       measurement_type="a",
                                                        limp_type="a",
                                                        limp_side="l").values()
             left_arm_gyr = Measurements.objects.filter(measurement_id=measurement_id,
-                                                       measurement_type="gyr",
+                                                       measurement_type="g",
                                                        limp_type="a",
                                                        limp_side="l").values()
             right_arm_acc = Measurements.objects.filter(measurement_id=measurement_id,
-                                                        measurement_type="acc",
+                                                        measurement_type="a",
                                                         limp_type="a",
                                                         limp_side="r").values()
             right_arm_gyr = Measurements.objects.filter(measurement_id=measurement_id,
-                                                        measurement_type="gyr",
+                                                        measurement_type="g",
                                                         limp_type="a",
                                                         limp_side="r").values()
             left_foot_acc = Measurements.objects.filter(measurement_id=measurement_id,
-                                                        measurement_type="acc",
+                                                        measurement_type="a",
                                                         limp_type="f",
                                                         limp_side="l").values()
             left_foot_gyr = Measurements.objects.filter(measurement_id=measurement_id,
-                                                        measurement_type="gyr",
+                                                        measurement_type="g",
                                                         limp_type="f",
                                                         limp_side="l").values()
             right_foot_acc = Measurements.objects.filter(measurement_id=measurement_id,
-                                                         measurement_type="acc",
+                                                         measurement_type="a",
                                                          limp_type="f",
                                                          limp_side="r").values()
             right_foot_gyr = Measurements.objects.filter(measurement_id=measurement_id,
-                                                         measurement_type="gyr",
+                                                         measurement_type="g",
                                                          limp_type="f",
                                                          limp_side="r").values()
 
