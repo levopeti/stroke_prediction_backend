@@ -165,28 +165,28 @@ class SaveAndPredictView(views.APIView):
     def post(self, request, endpoint_name, format=None):
         def load_ml_algorithm():
             return mlp
-        def old_load_ml_algorithm():
-            algorithm_status = self.request.query_params.get("status", "production")
-            algorithm_version = "0.0.1"  # self.request.query_params.get("version")
-
-            algs = MLAlgorithm.objects.filter(parent_endpoint__name=endpoint_name, status__status=algorithm_status,
-                                              status__active=True)
-
-            if algorithm_version is not None:
-                algs = algs.filter(version=algorithm_version)
-
-            # TODO: we have more algs from the same type, but the need the first now
-            # if len(algs) == 0:
-            #     raise ValueError("status: Error, message: ML algorithm is not available")
-            # if len(algs) != 1 and algorithm_status != "ab_testing":
-            #     raise ValueError("status: Error, message: ML algorithm selection is ambiguous."
-            #                      " Please specify algorithm version.")
-
-            # TODO
-            # alg_index = 0
-            # _algorithm_object = registry.endpoints[algs[alg_index].id]
-            _algorithm_object = registry.endpoints[3]
-            return _algorithm_object
+        # def old_load_ml_algorithm():
+        #     algorithm_status = self.request.query_params.get("status", "production")
+        #     algorithm_version = "0.0.1"  # self.request.query_params.get("version")
+        #
+        #     algs = MLAlgorithm.objects.filter(parent_endpoint__name=endpoint_name, status__status=algorithm_status,
+        #                                       status__active=True)
+        #
+        #     if algorithm_version is not None:
+        #         algs = algs.filter(version=algorithm_version)
+        #
+        #     # TODO: we have more algs from the same type, but the need the first now
+        #     # if len(algs) == 0:
+        #     #     raise ValueError("status: Error, message: ML algorithm is not available")
+        #     # if len(algs) != 1 and algorithm_status != "ab_testing":
+        #     #     raise ValueError("status: Error, message: ML algorithm selection is ambiguous."
+        #     #                      " Please specify algorithm version.")
+        #
+        #     # TODO
+        #     # alg_index = 0
+        #     # _algorithm_object = registry.endpoints[algs[alg_index].id]
+        #     _algorithm_object = registry.endpoints[3]
+        #     return _algorithm_object
 
         def write_data_into_db():
             if isinstance(request.data, dict):
